@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE configuration PUBLIC "-//mybatis.org//DTD Config 3.0//EN" "HTTP://mybatis.org/dtd/mybatis-3-config.dtd">
+
+<configuration>
+	<settings>
+		<setting name="cacheEnabled" value="false" />
+		<setting name="useGeneratedKeys" value="true" />
+		<setting name="defaultExecutorType" value="REUSE" />
+	</settings>
+	
+	<typeAliases>
+		<typeAlias type="vo.UserVO" alias="user"/> 
+		<typeAlias type="vo.ProductVO" alias="product"/> 
+		<typeAlias type="vo.ReviewVO" alias="review"/> 
+		<typeAlias type="vo.CartVO" alias="cart"/> 
+		<typeAlias type="vo.P_informVO" alias="p_inform"/>
+		<!-- 200630 --> 
+		<typeAlias type="vo.HistoryVO" alias="history"/>
+		<typeAlias type="vo.OrdersVO" alias="orders"/>
+		<typeAlias type="vo.PointVO" alias="point"/>
+		<typeAlias type="vo.CashVO" alias="cash"/>
+		
+	</typeAliases>
+	
+	<mappers>
+		<mapper resource="config/mybatis/mapper/user.xml"/>
+		<mapper resource="config/mybatis/mapper/product.xml"/>
+		<mapper resource="config/mybatis/mapper/review.xml"/>
+		<mapper resource="config/mybatis/mapper/cart.xml"/>
+		<mapper resource="config/mybatis/mapper/p_inform.xml"/>
+		<!-- 200630 -->
+		<mapper resource="config/mybatis/mapper/history.xml"/>
+		<mapper resource="config/mybatis/mapper/orders.xml"/>
+	</mappers>
+</configuration>

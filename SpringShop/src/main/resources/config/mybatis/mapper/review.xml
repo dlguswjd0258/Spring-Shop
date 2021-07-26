@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="r">
+	<!-- 2020.06.26 EDITED -->
+	<!-- 2020.06.29 EDITED -->
+	<insert id="review_insert" parameterType="review">
+		insert into review
+		values(seq_review_idx.nextVal, #{name}, #{subject},
+		#{content}, #{pwd},
+		#{ip}, sysdate, 0, seq_review_idx.currVal, 0, 0, 0, #{grade},
+		#{p_idx}, #{filename_r}, #{u_idx})
+	</insert>
+	<update id="update_product_grade"
+		parameterType="java.util.HashMap">
+		update product set p_grade = #{grade} where idx=#{p_idx}
+	</update>
+
+	<select id="get_product_grade" resultType="java.lang.Double"
+		parameterType="int">
+		select p_grade from product where idx=#{idx}
+	</select>
+
+	<update id="update_readhit" parameterType="int">
+		update review set
+		readhit = readhit + 1 where idx = #{idx}
+	</update>
+
+	<!-- 상품에 대한 후기 리스트 -->
+	<select id="get_reviews" parameterType="int" resultType="review">
+		select *
+		from review where p_idx = #{idx} and depth=0 and del_info = 0
+	</select>
+
+	<select id="get_reviews_all" parameterType="java.util.Map" resultType="review">
+		select * from 
+		(select rank() over(order by idx desc) no, r.* 
+		from ( select *	from review where depth=0 and del_info=0) r)
+		where no between #{start} and #{end}
+	</select>
+	
+	<!-- 특정 인덱스의 후기/댓글 -->
+	<select id="get_review" parameterType="int" resultType="review">
+		select *
+		from review where idx = #{r_idx}
+	</select>
+
+	<!-- 2020.06.26 EDITED -->
+	<!-- 페이지에 따른 게시물 조회 -->
+	<select id="review_list_paging" parameterType="java.util.Map"
+		resultType="review">
+		select * from (select rank() over(order by ref desc, step
+		asc) no, r.* from(select * from review where p_idx=#{idx} and depth=0)
+		r) where no between #{start} and #{end}
+	</select>
+
+	<!-- 2020.06.30 EDITED -->
+	<select id="review_count" resultType="int">
+		select count(*) from review
+		where p_idx = #{idx} and depth=0
+	</select>
+
+	<!-- 2020.06.30 EDITED -->
+	<select id="valid_review_count" resultType="int">
+		select count(*) from
+		review where p_idx = #{idx} and depth=0 and del_info = 0
+	</select>
+
+	<insert id="review_dat_insert" parameterType="review">
+		insert into review
+		values(seq_review_idx.nextVal, #{name}, #{subject}, #{content},
+		#{pwd}, #{ip}, sysdate, 0, #{ref}, 1, 1, 0, 0, #{p_idx},
+		#{filename_r}, #{u_idx})
+	</insert>
+
+	<update id="update_step" parameterType="int">
+		update review set step =
+		step + 1 where ref=#{ref} and depth=1
+	</update>
+
+	<select id="get_dadat_list" parameterType="java.lang.String"
+		resultType="review">
+		select * from review where ref=#{r_idx} and depth=1 order
+		by step asc
+	</select>
+	
+	<select id="get_dadat_list_all" parameterType="int"
+		resultType="review">
+		select * from review where ref=#{idx} and depth=1 order
+		by step asc
+	</select>
+
+	<!-- 2020.06.30 EDITED -->
+	<update id="del_update" parameterType="java.lang.String">
+		update review set del_info
+		= 1 where idx=#{r_idx}
+	</update>
+
+	<!-- 2020.06.30 EDITED -->
+	<select id="get_review_grade" parameterType="int"
+		resultType="int">
+		select grade from review where idx=#{r_idx}
+	</select>
+
+	<!-- 2020.06.30 EDITED -->
+	<select id="get_review_pwd" parameterType="java.lang.String"
+		resultType="java.lang.String">
+		select pwd from review where idx=#{r_idx}
+	</select>
+
+	<!-- 2020.06.30 EDITED -->
+	<update id="review_edit" parameterType="review">
+		update review set content
+		= #{content}, ip=#{ip}, regidate=sysdate, filename_r=#{filename_r}
+		where idx=#{idx}
+	</update>
+
+	<!-- 2020.06.30 EDITED -->
+	<update id="review_edit_nofile" parameterType="review">
+		update review set
+		content = #{content}, ip=#{ip}, regidate=sysdate where idx=#{idx}
+	</update>
+
+	<!-- 2020.07.09 EDITED -->
+	<select id="personal_review_list" parameterType="int" resultType="review">
+		select * from review where u_idx = #{u_idx} and del_info = 0 and depth = 0
+	</select>
+	
+	<select id="review_written" resultType="int" parameterType="java.util.Map">
+		select count(*) from review where p_idx=#{p_idx} and u_idx =#{u_idx} and del_info=0
+	</select>
+	
+	<select id="all_review_count" resultType="int">
+		select count(*) from review
+		where depth=0 and del_info=0
+	</select>
+	
+	<select id="product_one" parameterType="int" resultType="product">
+		select * from product where idx=#{p_idx}
+	</select>
+	
+	<update id="review_delete" parameterType="int">
+		update review set del_info=1 where p_idx=#{idx}
+	</update>
+	
+</mapper>
+
+
+
+
+
+
+
+
+
+
+
+

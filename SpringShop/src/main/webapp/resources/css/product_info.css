@@ -1,0 +1,153 @@
+@charset "UTF-8";span {
+	color: pink;
+}
+
+#body {
+	width: 1300px;
+	margin: 0 auto;
+}
+
+#body #outline_table {
+	padding: 60px;
+	width: 100%;
+}
+
+/* 2020.06.29 EDITED */
+#outline_table tr:nth-child(1) td {
+	padding-top: 30px;
+	vertical-align: top;
+	width: 50%;
+}
+
+#outline_table tr:nth-child(1){
+	
+}
+
+#outline_table tr:nth-child(1) td:nth-child(2) {
+	width: 50%;
+	padding-left: 20px;
+	padding-right: 
+}
+
+
+/* 2020.06.28 EDITED */
+#p_info {
+	width: 100%;
+}
+
+/* 2020.06.28 EDITED */
+#p_info tr:nth-child(2) td {
+	border-bottom: 1px solid gray;
+}
+
+/* 2020.06.28 EDITED */
+#p_info tr:nth-child(5) td {
+	color: gray;
+}
+
+/* 2020.06.28 EDITED */
+#p_info tr:nth-child(7) td {
+	vertical-align: bottom;
+	background-color: ye
+}
+
+#review_insert_box {
+	border: 1.5px solid pink;
+	width: 700px;
+}
+
+#review_show_box {
+	width: 700px;
+	border-spacing: 0 10px;
+}
+
+tr.reviews{
+	height: 30px;
+	border-top:2px solid gray;
+}
+
+/* 2020.06.27. EDITED */
+.black_button1 {
+	background: black;
+	color: white;
+	padding: 20px 100px;
+	border: none;
+	border-radius: 0;
+}
+.black_button {
+	background: black;
+	color: white;
+	padding: 20px 20px;
+	border: none;
+	border-radius: 0;
+}
+
+#to_dadat {
+	color: pink;
+	font-size: 3px;
+	font-weight: bold;
+}
+
+#to_dadat:hover {
+	color: orange;
+	cursor: pointer;
+}
+
+.padding30 {
+	padding-top: 30px;
+}
+
+#to_reviews {
+	padding: 2px 500px;
+	border-radius: 0;
+	border-color: black;
+	background-color: white;
+	font-size: 25px;
+	color: gray;
+}
+
+#to_reviews:hover {
+	color: red;
+	cursor: pointer;
+}
+
+#review_category td {
+	border-bottom: 1px solid gray;
+	height: 30px;
+}
+
+/* 2020.06.28 EDITED */
+
+.bt_for_review{
+	border-radius: 0;
+	border: 1px solid gray;
+	background-color: white;
+	color: pink;
+	font-size: 3px;
+	padding: 2px 3px;
+	margin-bottom: 5px;
+}
+
+.bt_for_review:hover{
+	cursor: pointer;
+	color: orange;
+}
+
+.bt_cartinfo:hover{
+	cursor:pointer;
+}
+
+#selected_items tr:nth-child(1) td{
+	padding: 10px 0px;
+	color: gray;
+}
+
+#cart_p_color{
+	width: 15px;
+	height: 15px;
+	border: 1px solid gray;
+}
+
+.image_s{
+	height: 100%;
+}

@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="h">
+	<select id="history_list" parameterType="java.util.Map" resultType="history">
+		select * from 
+		(select rank() over(order by o_idx desc, h_idx) no, h.* 
+		from (select * from history_view where u_idx=#{u_idx}) h)
+		 where no between #{start} and #{end}
+	</select>
+	
+	<select id="get_history_list" parameterType="int" resultType="history">
+		select * from history_view where u_idx=#{u_idx} order by o_idx desc, h_idx
+	</select>
+	
+	<select id="history_detail_list" parameterType="int" resultType="history">
+		select * from history_view where o_idx=#{o_idx} order by h_idx
+	</select>
+	
+	<insert id="history_insert" parameterType="history">
+		insert into history values(
+			seq_history_idx.nextVal,
+			#{o_idx},
+			#{u_idx},
+			#{p_idx},
+			#{p_color},
+			#{p_size},
+			#{p_cnt}
+		)
+	</insert>
+	
+	<!-- 200707 -->
+	<select id="point_save" parameterType="java.util.Map" resultType="point">
+		select * from 
+		(select rank() over(order by point_idx desc) no, p.*
+		from (select * from point where u_idx = #{u_idx} and p_type=0) p )
+		where no between #{start} and #{end}
+	</select>
+
+	<!-- 200707 -->
+	<select id="point_use" parameterType="java.util.Map" resultType="point">
+		select * from 
+		(select rank() over(order by point_idx desc) no, p.*
+		from (select * from point where u_idx = #{u_idx} and p_type=1 and amount != 0) p )
+		where no between #{start} and #{end}
+	</select>
+
+	<!-- 200707 -->
+	<select id="cash_save" parameterType="java.util.Map" resultType="cash">
+		select * from 
+		(select rank() over(order by cash_idx desc) no, c.*
+		from (select * from cash where u_idx = #{u_idx} and c_type=0) c )
+		where no between #{start} and #{end}
+	</select>
+
+	<!-- 200707 -->
+	<select id="cash_use" parameterType="java.util.Map" resultType="cash">
+		select * from 
+		(select rank() over(order by cash_idx desc) no, c.*
+		from (select * from cash where u_idx = #{u_idx} and c_type=1 and amount != 0) c )
+		where no between #{start} and #{end}
+	</select>
+	
+	<!-- 200706 -->
+	<update id="cash_update" parameterType="user">
+		update users set cash=cash+#{cash} where idx=#{idx}
+	</update>
+	
+	<!-- 200706 -->
+	<insert id="cash_insert" parameterType="cash">
+		insert into cash values( seq_cash_idx.nextVal, #{u_idx}, sysdate, #{amount}, 0)
+	</insert>
+	
+	<!-- 200707 -->
+	<select id="history_count" parameterType="int" resultType="int">
+		select count(*) from history_view where u_idx=#{u_id} 
+	</select>
+
+	<!-- 200707 -->
+	<select id="point_save_count" parameterType="int" resultType="int">
+		select count(*) from point where u_idx = #{u_idx} and p_type=0
+	</select>
+
+	<!-- 200707 -->
+	<select id="point_use_count" parameterType="int" resultType="int">
+		select count(*) from point where u_idx=#{u_idx} and p_type=1 and amount != 0
+	</select>
+
+	<!-- 200707 -->
+	<select id="cash_save_count" parameterType="int" resultType="int">
+		select count(*) from cash where u_idx = #{u_idx} and c_type=0
+	</select>
+
+	<!-- 200707 -->
+	<select id="cash_use_count" parameterType="int" resultType="int">
+		select count(*) from cash where u_idx=#{u_idx} and c_type=1 and amount != 0
+	</select>
+	
+	<!-- 200708 -->
+	<update id="delivery_update" parameterType="int">
+		update orders set delivery=delivery + 1 where u_idx=#{u_idx} and 
+		(( delivery = 0 and sysdate - buydate > 1 ) or (delivery=1 and sysdate - buydate > 2))
+	</update>
+	
+	<select id="review_list" parameterType="java.util.Map" resultType="review">
+		select * from
+		( select rank() over( order by ref desc, step asc) no, r.*
+		  from ( select * from review where u_idx=#{u_idx} and depth=0 and del_info=0 ) r)
+		where no between #{start} and #{end}
+	</select>
+	
+	<select id="review_count" parameterType="int" resultType="int">
+		select count(*) from review where u_idx=#{u_idx} and depth=0 and del_info=0
+	</select>
+	
+	<select id="select_product" parameterType="int" resultType="product">
+		select * from product where idx=#{p_idx}
+	</select>
+	
+	<select id="select_dat" parameterType="int" resultType="review">
+		select * from review where ref=#{ref} and depth=1
+	</select>
+</mapper>
+
+
+
+
+
+
+
+
+
+
+
+

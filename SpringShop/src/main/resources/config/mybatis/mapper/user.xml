@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="user">
+
+	<!-- 중복 아이디 있는지 확인 -->
+	<select id="user_one" parameterType="java.lang.String" resultType="user"> 
+		select * from users where id=#{id}
+	</select>
+	
+	<!-- 200707 -->
+	<!-- 중복 전화번호 있는지 확인 -->
+	<select id="user_tel_check" parameterType="java.lang.String"
+		resultType="user">
+		select * from users where tel=#{tel} and del_info=0
+	</select>
+	
+	<!-- 200707 -->
+	<!-- 중복 이메일 있는지 확인 -->
+	<select id="user_email_check" parameterType="java.lang.String"
+		resultType="user">
+		select * from users where email=#{email} and del_info=0
+	</select>
+	
+	<!-- 회원 등록 -->
+	<insert id="user_insert" parameterType="user">
+		insert into users values(
+			seq_user_idx.nextVal, #{id}, #{pwd},
+			#{name}, #{addr}, #{gender}, #{tel},
+			#{email}, 0, 0, 0, 'bronze', 0, 0
+		)
+	</insert>
+	
+	<!-- 아이디 찾기 -->
+	<select id="user_id" parameterType="user" resultType="user">
+		select * from users 
+		where (tel=#{tel} or email=#{email}) and name=#{name} 
+	</select>
+	
+	<!-- 비밀번호 찾기기 위한 정보 가져오기 -->
+	<select id="user_pwd" parameterType="user" resultType="user">
+		select * from users 
+		where (tel=#{tel} or email=#{email}) and name=#{name} and id=#{id}
+	</select>
+	
+	<!-- 비밀번호 재설장 -->
+	<update id="pwd_reset" parameterType="user">
+		update users set pwd=#{pwd}
+		where idx=#{idx} and id=#{id}
+	</update>
+	
+	<!-- 회원 삭제 -->
+	<update id="user_delete" parameterType="int">
+		update users set
+		del_info=1 where idx=#{idx}
+	</update>
+
+	<!-- 회원 정보 불러오기 -->
+	<select id="user_whole" resultType="user">
+		select * from users order by admin DESC, idx
+	</select>
+	
+	<select id="user_by_page" resultType="user">
+		select * from (select rank() over(order by admin DESC, idx) no,
+		u.* from(select * from users) u) where no between
+		#{start} and #{end}
+	</select>
+
+	<!-- 회원등급 수정하기 (작성일 0626) -->
+	<update id="user_modify" parameterType="java.util.Map">
+		update users set admin
+		=#{selectoption} where idx=#{idx}
+	</update>
+	
+	<select id="user_select_one_idx" parameterType="int" resultType="user">
+		select * from users where idx=#{idx}
+	</select>
+	
+	<!-- 예치금수정 -->
+	<update id="user_cash_update" parameterType="user">
+		update users set cash=#{cash} where idx=#{idx}
+	</update>
+	<!-- 포인트사용 -->
+	<update id="user_use_point" parameterType="user">
+		update users set point=#{point} where idx=#{idx}
+	</update>
+	
+	<update id="user_add_point" parameterType="user">
+		update users set point=#{point}, total_pay=#{total_pay} where idx=#{idx}
+	</update>
+	
+	<!-- 200707 -->
+	<update id="user_update">
+		update users set pwd=#{pwd}, name=#{name}, addr=#{addr}, gender=#{gender}, tel=#{tel}, email=#{email} where idx=#{idx}
+	</update>
+	
+	<update id="update_membership" parameterType="user">
+		update users set membership=#{membership} where idx=#{idx}
+	</update>
+	
+	<select id="user_count" resultType="int">
+		select count(*) from users
+	</select>
+</mapper>
+
+
+
+
+
+
+
+
+
+
+

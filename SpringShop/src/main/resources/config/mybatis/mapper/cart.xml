@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="c">
+	<insert id="cart_insert" parameterType="cart">
+		insert into cart values(
+			seq_cart_idx.nextVal,
+			#{u_idx},
+			#{p_idx},
+			#{p_color},
+			#{p_size},
+			#{c_cnt}
+		)
+	</insert>
+	<select id="cart_view_list" parameterType="int" resultType="vo.Cart_viewVO">
+		select * from cart_view where u_idx=#{u_idx} order by c_idx desc
+	</select>
+	<select id="cart_select_one" parameterType="cart" resultType="cart">
+		select * from cart where u_idx=#{u_idx} and p_idx=#{p_idx} and p_color=#{p_color} and p_size=#{p_size}
+	</select>
+	<update id="cart_update_cnt" parameterType="cart">
+		update cart set c_cnt=#{c_cnt} where u_idx=#{u_idx} and p_idx=#{p_idx} and p_color=#{p_color} and p_size=#{p_size}
+	</update>
+	<update id="cart_update" parameterType="cart">
+		update cart set c_cnt=#{c_cnt} where u_idx=#{u_idx} and c_idx=#{c_idx}
+	</update>
+	<delete id="cart_delete" parameterType="int">
+		delete from cart where c_idx=#{c_idx}
+	</delete>
+	<select id="select_one" parameterType="cart" resultType="cart">
+		 select * from cart where u_idx=#{u_idx} and c_idx=#{c_idx}
+	</select>
+	<delete id="cart_clear" parameterType="int">
+		delete from cart where u_idx=#{u_idx}
+	</delete>
+	
+	<select id="cart_order_list" parameterType="int" resultType="vo.Cart_viewVO">
+		select * from cart_view where u_idx=#{u_idx} order by c_idx desc
+	</select>
+	
+	<delete id="cart_delete_all" parameterType="vo.Cart_viewVO">
+		delete from cart where u_idx=#{u_idx} and c_idx=#{c_idx}
+	</delete>
+</mapper>
+
+
+
+
+
+
+
+
+
+
+
+

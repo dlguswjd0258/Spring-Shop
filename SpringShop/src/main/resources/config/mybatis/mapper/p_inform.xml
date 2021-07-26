@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="p_inform">
+	<insert id="p_inform_insert" parameterType="p_inform">
+		insert into p_inform
+		values(
+		seq_p_inform_idx.nextVal,
+		#{ref},
+		#{color},
+		#{i_size},
+		#{i_stock}
+		)
+	</insert>
+	<select id="select_list" parameterType="int"
+		resultType="p_inform">
+		select * from p_inform where ref=#{ref} order by i_size
+		desc
+	</select>
+	<select id="select_one" parameterType="p_inform"
+		resultType="p_inform">
+		select * from p_inform where ref=#{ref} and color=#{color}
+		and i_size=#{i_size}
+	</select>
+	<update id="update_stock" parameterType="p_inform">
+		update p_inform set
+		i_stock=#{i_stock} where ref=#{ref} and color=#{color} and
+		i_size=#{i_size}
+	</update>
+
+	<!-- 세부정보 수정 -->
+	<update id="p_inform_update" parameterType="p_inform">
+		update p_inform set
+		color=#{color}, i_size=#{i_size}, i_stock=#{i_stock}
+		where
+		i_idx=#{i_idx}
+	</update>
+
+	<!-- 200629 -->
+	<!-- 세부정보 삭제 -->
+	<delete id="p_inform_delete" parameterType="int">
+		delete from p_inform
+		where idx=#{idx}
+	</delete>
+
+	<!-- 2020.07.03 EDITED -->
+	<select id="product_stock_list" parameterType="int"
+		resultType="int">
+		select i_stock from p_inform where ref=#{p_idx}
+	</select>
+</mapper>
+
+
+
+
+
+
+
+
+
+
+
+

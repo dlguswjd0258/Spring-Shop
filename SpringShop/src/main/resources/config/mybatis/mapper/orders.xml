@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="o">
+	<select id="orders_one" parameterType="int" resultType="orders">
+		select * from orders where o_idx=#{o_idx}
+	</select>
+
+	<!-- 200702 -->
+	<select id="point_one" parameterType="int" resultType="point">
+		select * from point where o_idx=#{o_idx} and p_type=1
+	</select>
+	
+	<insert id="orders_insert" parameterType="orders">
+		insert into orders values(
+			seq_orders_idx.nextVal,
+			#{o_name},
+			#{o_tel},
+			#{o_addr},
+			#{o_email},
+			#{o_content},
+			#{o_fee},
+			#{o_total},
+			sysdate,
+			0,
+			#{u_idx}
+		)
+	</insert>
+	
+	<insert id="cash_insert" parameterType="orders">
+		insert into cash values(
+			seq_cash_idx.nextVal,
+			#{u_idx},
+			sysdate,
+			#{o_total},
+			1
+			
+		)
+	</insert>
+	
+	<select id="orders_index_one" parameterType="orders" resultType="orders">
+		select * from orders where o_name=#{o_name} and o_total=#{o_total} and u_idx=#{u_idx} order by o_idx desc
+		
+	</select>
+	
+	<insert id="use_point" parameterType="point">
+		insert into point values(
+			seq_point_idx.nextVal,
+			#{o_idx},
+			#{u_idx},
+			sysdate,
+			#{amount},
+			1
+		)
+	</insert>
+	
+	<insert id="add_point" parameterType="point">
+		insert into point values(
+			seq_point_idx.nextVal,
+			#{o_idx},
+			#{u_idx},
+			sysdate,
+			#{amount},
+			0
+		)
+	</insert>
+</mapper>
+
+
+
+
+
+
+
+
+
+
+
+

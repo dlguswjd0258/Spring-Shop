@@ -1,0 +1,290 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="p">
+
+	<!-- 200626 -->
+	<select id="product_list" resultType="product">
+		select * from product order
+		by p_del, idx desc
+	</select>
+	<select id="p_one" parameterType="java.lang.String"
+		resultType="product">
+		select * from product where p_name=#{p_name} and p_del = 0
+	</select>
+	<insert id="product_insert" parameterType="product">
+		insert into product
+		values(
+		seq_product_idx.nextVal,
+		#{category},
+		#{p_name},
+		#{p_price},
+		#{p_saleprice},
+		#{filename_s},
+		#{filename_l},
+		#{p_content},
+		sysdate,
+		0,
+		0,
+		0
+		)
+	</insert>
+
+	<select id="product_one" parameterType="int"
+		resultType="product">
+		select * from product where idx=#{idx}
+	</select>
+
+	<delete id="product_delete_inform" parameterType="int">
+		delete from
+		p_inform where ref=#{idx}
+	</delete>
+
+	<delete id="product_delete" parameterType="int">
+		delete from product
+		where idx=#{idx}
+	</delete>
+
+	<select id="product_count" resultType="int">
+		select count(*) from 
+		product where p_del = 0
+	</select>
+	
+	<select id="product_count_m" resultType="int">
+		select count(*) from 
+		product
+	</select>
+
+	<select resultType="product" id="page_product_list"
+		parameterType="java.util.HashMap">select * from (select rank() over(order by idx desc) no,
+		p.* from(select * from product where p_del = 0) p) where no between
+		#{start} and #{end}
+	</select>
+	
+	<select resultType="product" id="page_product_list_m"
+		parameterType="java.util.HashMap">select * from (select rank() over(order by idx desc) no,
+		p.* from(select * from product order by p_del asc) p) where no between
+		#{start} and #{end} order by p_del asc
+	</select>
+
+	<select id="select_one" parameterType="java.lang.String"
+		resultType="product">
+		select * from product where p_name=#{p_name} and p_del = 0
+	</select>
+
+	<select id="product_grade" resultType="int" parameterType="int">
+		select p_grade from product where idx=#{idx}
+	</select>
+
+	<select id="product_color_list" parameterType="int"
+		resultType="java.lang.String">
+		select color from p_inform where ref=#{idx}
+	</select>
+
+	<select id="product_size_list" parameterType="int"
+		resultType="java.lang.String">
+		select i_size from p_inform where ref=#{idx}
+	</select>
+	<!-- 상단메뉴 대분류 클릭시 리스트 -->
+	<select id="selectList_best" resultType="product">
+		select * from best where p_del = 0 order
+		by p_sold desc
+	</select>
+	<select id="selectList_top" resultType="product">
+		select * from top where p_del = 0 order
+		by p_sold desc
+	</select>
+	<select id="selectList_shirts" resultType="product">
+		select * from shirts where p_del = 0
+		order by p_sold desc
+	</select>
+	<select id="selectList_pants" resultType="product">
+		select * from pants where p_del = 0
+		order by p_sold desc
+	</select>
+	<select id="selectList_outer" resultType="product">
+		select * from outer  where p_del = 0
+		order by p_sold desc
+	</select>
+
+	<!-- 상단메뉴 하위카테고리 클릭시 리스트 -->
+	<select id="select_category" parameterType="java.lang.String"
+		resultType="product">
+		select * from product where p_del = 0 and category=#{category} order by
+		p_sold desc
+	</select>
+
+	<!-- 200626 -->
+	<!-- 등록된 상품 p_del = 1로 변경 -->
+	<update id="product_del" parameterType="int">
+		update product set
+		p_del=1 where idx=#{idx}
+	</update>
+
+	<!-- 200627 -->
+	<!-- 상품 수정 -->
+	<update id="product_update" parameterType="product">
+		update product
+		set
+		category=#{category}, p_name=#{p_name}, p_price=#{p_price},
+		p_saleprice=#{p_saleprice},
+		filename_s=#{filename_s},
+		filename_l=#{filename_l}, p_content=#{p_content}, p_date=sysdate
+		where
+		idx=#{idx}
+	</update>
+	
+	<update id="update_p_sold" parameterType="product">
+		update product set p_sold=#{p_sold} where idx=#{idx}
+	</update>
+	<select id="color_size_match" parameterType="java.util.HashMap"
+		resultType="java.lang.String">
+		select i_size from p_inform where ref=#{idx} and color like
+		concat('%', #{color})
+	</select>
+
+	<select id="product_stock" parameterType="java.util.HashMap"
+		resultType="int">
+		select i_stock from p_inform where ref=#{ref} and
+		color=#{color} and i_size=#{i_size}
+	</select>
+	
+	<select id="search_list" parameterType="java.lang.String" resultType="product">
+		select * from product where (category LIKE '%'||#{search}||'%' or 
+		p_name LIKE '%'||#{search}||'%') and p_del = 0
+	</select>
+	
+	<select resultType="product" id="page_category_list"
+		parameterType="java.util.HashMap">select * from (select rank() over(order by idx desc) no,
+		p.* from(select * from product where p_del = 0 and
+		category=#{category}) p) where no between #{start} and #{end}
+	</select>
+	
+	<select resultType="product" id="page_category_list_m"
+		parameterType="java.util.HashMap">select * from (select rank() over(order by idx desc) no,
+		p.* from(select * from product where
+		category=#{category}) p) where no between #{start} and #{end}
+	</select>
+
+	<select resultType="int" id="category_count"
+		parameterType="java.lang.String">select count(*) from product where category =
+		#{category} and p_del=0
+	</select>
+	
+	<select resultType="int" id="category_count_m"
+		parameterType="java.lang.String">select count(*) from product where category =
+		#{category}
+	</select>
+
+	<!-- 상단메뉴 대분류 클릭시 리스트 페이징 -->
+
+
+	<select resultType="product" id="page_list_best"
+		parameterType="java.util.HashMap">select * from (select rank() over(order by p_sold desc)
+		no, v.* from(select * from best where p_del = 0) v) where no between
+		#{start} and #{end} order by p_sold desc
+	</select>
+
+	<select resultType="product" id="page_list_top"
+		parameterType="java.util.HashMap">select * from (select rank() over(order by idx desc)
+		no, v.* from(select * from top where p_del = 0) v) where no between
+		#{start} and #{end}
+	</select>
+
+	<select resultType="product" id="page_list_shirts"
+		parameterType="java.util.HashMap">select * from (select rank() over(order by idx desc)
+		no, v.* from(select * from shirts where p_del = 0) v) where no between
+		#{start} and #{end}
+	</select>
+
+	<select resultType="product" id="page_list_pants"
+		parameterType="java.util.HashMap">select * from (select rank() over(order by idx desc)
+		no, v.* from(select * from pants where p_del = 0) v) where no between
+		#{start} and #{end}
+	</select>
+
+	<select resultType="product" id="page_list_outer"
+		parameterType="java.util.HashMap">select * from (select rank() over(order by idx desc)
+		no, v.* from(select * from outer where p_del = 0) v) where no between
+		#{start} and #{end}
+	</select>
+	
+	<select resultType="product" id="page_list_best_m"
+		parameterType="java.util.HashMap">select * from (select rank() over(order by idx desc)
+		no, v.* from(select * from best) v) where no between
+		#{start} and #{end}
+	</select>
+
+	<select resultType="product" id="page_list_top_m"
+		parameterType="java.util.HashMap">select * from (select rank() over(order by idx desc)
+		no, v.* from(select * from top) v) where no between
+		#{start} and #{end}
+	</select>
+
+	<select resultType="product" id="page_list_shirts_m"
+		parameterType="java.util.HashMap">select * from (select rank() over(order by idx desc)
+		no, v.* from(select * from shirts) v) where no between
+		#{start} and #{end}
+	</select>
+
+	<select resultType="product" id="page_list_pants_m"
+		parameterType="java.util.HashMap">select * from (select rank() over(order by idx desc)
+		no, v.* from(select * from pants) v) where no between
+		#{start} and #{end}
+	</select>
+
+	<select resultType="product" id="page_list_outer_m"
+		parameterType="java.util.HashMap">select * from (select rank() over(order by idx desc)
+		no, v.* from(select * from outer) v) where no between
+		#{start} and #{end}
+	</select>
+
+	<select resultType="int" id="count_best">select count(*) from best where
+		p_del=0
+	</select>
+
+	<select resultType="int" id="count_top">select count(*) from top where
+		p_del=0
+	</select>
+
+	<select resultType="int" id="count_pants">select count(*) from pants where
+		p_del=0
+	</select>
+
+	<select resultType="int" id="count_shirts">select count(*) from shirts where
+		p_del=0
+	</select>
+
+	<select resultType="int" id="count_outer">select count(*) from outer where
+		p_del=0
+	</select>
+	
+	<select resultType="int" id="count_best_m">select count(*) from best
+	</select>
+
+	<select resultType="int" id="count_top_m">select count(*) from top
+	</select>
+
+	<select resultType="int" id="count_pants_m">select count(*) from pants
+	</select>
+
+	<select resultType="int" id="count_shirts_m">select count(*) from shirts
+	</select>
+
+	<select resultType="int" id="count_outer_m">select count(*) from outer
+	</select>
+	
+</mapper>
+
+
+
+
+
+
+
+
+
+
+
+

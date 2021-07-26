@@ -1,0 +1,155 @@
+@charset "UTF-8";
+
+*{ margin: 0; padding: 0; font-size: 12px; }
+
+#main, .btn_box{
+    width: 1260px;
+    margin: 0 auto;
+}
+
+.title{
+    margin: 50px 0px;
+    text-align: center;
+}
+
+.title h2{
+	color: #333;
+    font-size: 22px;
+    letter-spacing: 5px;
+    font-weight: 300;
+}
+
+table img{
+	width: 50px;
+	height: 50px;
+}
+
+.table1{
+	position: relative;
+    margin: 10px 0 0;
+    width: 100%;
+    border-top: 1px solid #d7d5d5;
+    border-left: none;
+    border-right: none;
+    border-spacing: 0;
+    border-collapse: collapse;
+    border-top-color: black;
+    color: #fff;
+    line-height: 1.5;
+}
+
+.table2{
+	position: relative;
+    margin: 10px 0 0;
+    width: 100%;
+    border-top: 1px solid black;
+    border-left: none;
+    border-right: none;
+    border-spacing: 0;
+    border-collapse: collapse;
+    color: #fff;
+    line-height: 1.5;
+   	margin-top: 100px;
+}
+
+
+
+#main th, #main td {
+	vertical-align: middle;
+}
+
+#main th {
+	width: 15%;
+	padding: 15px 0 15px 0;
+    border-bottom: 1px solid #dfdfdf;
+    border-bottom-width: 0;
+    color: #353535;
+    font-weight: normal;
+    text-align: center;
+}
+
+#main td{
+	padding: 8px 10px 7px;
+    color: #353535;
+}
+
+#main table input, #main table select {
+	padding: 0 10px;
+	height: 28px;
+	line-height: 28px;
+	vertical-align: middle;
+    border: 1px solid #ddd;
+	color: #353535;
+}
+
+#main input:hover{
+	border: 1px solid #aaa;
+}
+
+input:focus{
+	outline: none !important;
+	border: 1px solid #aaa;
+}
+
+table input[type=button]{
+	margin: 0 5px;
+	width: 80px;
+	cursor: pointer;
+}
+
+.btn_box{
+	margin-top: 30px;
+	text-align: center;
+	margin-bottom: 100px;
+}
+.btn_box input[type=button]{
+	width: 130px;
+	height: 40px;
+	cursor: pointer;
+	margin-right: 10px;
+}
+
+.color_box{
+	border: none;
+	width:10px;
+	height:10px;
+	display: inline-block;
+}
+
+.table1 tr{
+	text-align: center;
+}
+
+.table1 th{
+	background-color: #fbfafa;
+}
+
+.table2 tr{
+	text-align: right;
+}
+
+.table2 td{
+	font-style: bold;
+	font-size: 15px;
+}
+
+.empty{
+	margin-top: 30px;
+	padding-top: 20px;
+	padding-bottom: 20px;
+}
+
+#main tr{
+	border-bottom: 1px solid #dfdfdf;
+}
+
+#main td{
+	padding-top: 10px;
+	padding-bottom: 10px;
+}
+
+.option {
+	margin: 9px 0 0;
+	color: #757575;
+	line-height: 16px;
+}

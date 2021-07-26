@@ -1,0 +1,24 @@
+@charset "UTF-8";
+html{min-height: 100%; position: relative;}
+body{width: 1300px; margin: 0 auto; padding-top: 300px; font-size: 12px;}
+table{border-collapse: collapse;}
+ul, li{list-style: none;}
+a{text-decoration: none;}
+
+.title{
+    margin: 50px 0px;
+    text-align: center;
+}
+
+.title h2{
+	color: #333;
+    font-size: 22px;
+    letter-spacing: 5px;
+    font-weight: 300;
+}
+
+/* 200630 */
+#main{
+	width: 1300px;
+	margin:0 auto;
+}
